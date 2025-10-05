@@ -35,6 +35,10 @@ This ansible setup  configures a pre-provisioned EC2 instance.The playbook achie
     ssh-copy-id -f "-o IdentityFile=<PATH_TO_PEM_FILE>" ubuntu@<INSTANCE_PUBLIC_IP>
     ```
 3. Configure the Ansible Inventory
+    Open your inventory.ini file and replace the placeholders with the actual connection details for your EC2 instance. 
+
+    Replace <INSTANCE_PUBLIC_IP> with your EC2 instance's public IP address.
+
 4. Execute the Playbook
    Run the playbook from your main project folder, specifying your inventory file:
    ```bash
@@ -44,12 +48,12 @@ This ansible setup  configures a pre-provisioned EC2 instance.The playbook achie
     After the playbook completes, verify the configuration:
      1. File Check: SSH into the EC2 instance as the designated non-root user.
         ```bash
-        ssh devops_user@<INSTANCE_PUBLIC_IP>
+        ssh ubuntu@<INSTANCE_PUBLIC_IP>
         ```
         - Then, check the file permissions:
         ```bash
             ls -l /opt/config.txt
-            # Output should show: -rw-rw---- 1 devops devops ... /opt/config.txt
+            # Output should show: -rw-rw---- 1 devops_user devops ... /opt/config.txt
         ```
 
     2. Web Server Check: Open a browser and navigate to `http://<INSTANCE_PUBLIC_IP>` You should 
