@@ -1,0 +1,60 @@
+---
+# tasks file for ec2_instance
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install PostgreSQL packages
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2 
+    state: present
+
+- name: Ensure PostgreSQL service is running and enabled
+  systemd:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create devops group
+  group:
+    name: devops
+    state: present 
+
+- name: Create non-root user 'devops_user' and add to 'devops' group
+  user:
+    name: devops_user
+    groups: devops
+    append: yes
+    state: present 
+    shell: /bin/bash 
+
+- name: Copy file with owner and permissions
+  copy:
+    src: config.txt
+    dest: /opt/config.txt
+    owner: devops_user
+    group: devops
+    mode: '0660'
+
+- name: Install apache httpd
+  apt:
+    name: apache2
+    state: present 
+
+- name: Ensure Apache service is enabled and running
+  systemd:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: enable mod_rewrite
+  apache2_module:
+    name: rewrite
+    state: present
+  notify:
+    - restart apache2
+
+ 
