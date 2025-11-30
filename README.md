@@ -63,3 +63,4 @@ This ansible setup  configures a pre-provisioned EC2 instance.The playbook achie
        sudo systemctl status postgresql
        # Should show: Active: active (running/exited)
        ```
+       test the git diff
